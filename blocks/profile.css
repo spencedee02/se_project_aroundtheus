@@ -20,7 +20,7 @@
   grid-area: button;
   border-color: white;
   border-style: solid;
-  margin-right: 268px;
+  margin-left: 18px;
   border-width: 1px;
 }
 
@@ -46,12 +46,14 @@
 }
 
 .profile__title {
-  font-family: Inter;
   font-size: 42px;
   line-height: 48px;
   font-weight: 500;
   grid-area: title;
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .profile__description {
@@ -77,7 +79,8 @@
 @media screen and (max-width: 480px) {
   .profile {
     flex-direction: column;
-    padding-top: 42px;
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .profile__info {
@@ -119,6 +122,7 @@
   }
 
   .profile__image {
+    margin-top: 38.25px;
     margin-right: 0;
   }
 }
