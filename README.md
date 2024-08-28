@@ -27,3 +27,5 @@ This project is designed to highlight a wide range of tourist attractions across
 GitHub Page: https://spencedee02.github.io/se_project_aroundtheus/
 
 ### Video Description
+
+https://drive.google.com/file/d/1d5B6Fbvu1LSFqgvL5UgWQQpf-xNuh7pO/view?usp=sharing
