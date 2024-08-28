@@ -10,3 +10,18 @@
   padding: 0;
   margin: 0;
 }
+
+/*Incorrect gap between profile and cards sections.*/
+
+/* I spent almost 3 hours trying to figure this out.
+If I put a padding or margin 36px it would look off compared to the design.
+ I really cannot figure this part*/
+
+/*
+@media screen and (max-width: 320px) {
+  .cards__list {
+    padding: 36px; 
+  }
+  
+}
+*/

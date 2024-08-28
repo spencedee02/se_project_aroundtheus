@@ -76,6 +76,45 @@
   margin-right: 24px;
 }
 
+@media screen and (max-width: 770px) {
+  .profile__add-button {
+    width: 50px;
+  }
+
+  .profile__info {
+    display: grid;
+    grid-template-areas:
+      "title button"
+      "description description";
+    grid-template-columns: auto;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .profile__title {
+    font-size: 22px;
+    line-height: 26.63px;
+    font-weight: 500;
+    grid-area: title;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .profile__description {
+    font-size: 14px;
+    line-height: 16.94px;
+    font-weight: 400;
+    grid-area: description;
+    margin: 7px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
 @media screen and (max-width: 480px) {
   .profile {
     flex-direction: column;
