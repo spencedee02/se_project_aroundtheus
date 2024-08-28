@@ -1,23 +1,29 @@
 # Project 3: Around The U.S.
 
-### Overview
+### Project Name:
 
-- Intro
+Around The U.S.
+
+### Description:
+
+This project is designed to highlight a wide range of tourist attractions across the United States. Users can explore diverse locations, view stunning images, and read detailed descriptions of each destination. Whether seeking inspiration for their next trip or simply looking to learn more about the U.S.'s rich array of landmarks and attractions, this platform offers a comprehensive and engaging experience.
+
+### Technologies and Techniques Used:
+
+- HTML5
+- CSS3
+- Flexbox
+- Grid Layouts
+- Media Queries
+- BEM Methodology
 - Figma
-- Images
 
-**Intro**
-
-This project is made so all the elements are displayed correctly on popular screen sizes. We recommend investing more time in completing this project, since it's more difficult than previous ones.
-
-**Figma**
+**Figma Reference**
 
 - [Link to the project on Figma](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)
 
-**Images**
-
-The way you'll do this at work is by exporting images directly from Figma — we recommend doing that to practice more. Don't forget to optimize them [here](https://tinypng.com/), so your project loads faster.
-
-Good luck and have fun!
+### Demo Page
 
 GitHub Page: https://spencedee02.github.io/se_project_aroundtheus/
+
+### Video Description
