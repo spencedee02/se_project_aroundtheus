@@ -5,11 +5,12 @@
   bottom: 0;
   right: 0;
   left: 0;
-  display: flex;
+  display: none;
   z-index: 999;
 }
 
 .modal__opened {
+  display: flex;
 }
 
 .modal__container {

@@ -120,13 +120,23 @@
       </footer>
     </div>
 
-    <div class="modal">
+    <div id="profile-edit-modal" class="modal">
       <div class="modal__container">
-        <button class="modal__close"></button>
+        <button id="modal-close" class="modal__close"></button>
         <p class="modal__heading">Edit Profile</p>
         <form class="modal__form">
-          <input type="text" name="title" class="modal__input" />
-          <input type="text" name="description" class="modal__input" />
+          <input
+            placeholder="Name"
+            type="text"
+            name="title"
+            class="modal__input"
+          />
+          <input
+            placeholder="Description"
+            type="text"
+            name="description"
+            class="modal__input"
+          />
           <button class="modal__save">Save</button>
         </form>
       </div>
