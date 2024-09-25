@@ -31,29 +31,48 @@ const initialCards = [
 
 const profileEditButton = document.querySelector("#profile-edit-button");
 const profileEditModal = document.querySelector("#profile-edit-modal");
-const profileEditModalClose = document.querySelector("#modal-close");
+const profileEditCloseButton = document.querySelector("#modal-close");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitleInput = document.querySelector("#profile-title-input");
 const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
-const profileSave = document.querySelector(".modal__form");
+const profileEditForm = profileEditModal.querySelector(".modal__form");
 
-profileEditButton.addEventListener("click", () => {
-  profileTitleInput.value = profileTitle.textContent;
-  profileDescriptionInput.value = profileDescription.textContent;
+/* -------------------------------------------------------------------*/
+/*                      FUNCTIONS                                     */
+/* -------------------------------------------------------------------*/
 
+function closePopup() {
+  profileEditModal.classList.remove("modal__opened");
+}
+function openPopup() {
   profileEditModal.classList.add("modal__opened");
-});
+}
 
-profileSave.addEventListener("submit", (e) => {
+/* -------------------------------------------------------------------*/
+/*                      EVENT HANDLERS                                */
+/* -------------------------------------------------------------------*/
+function handlerProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
-  profileEditModal.classList.remove("modal__opened");
-});
+  closePopup();
+}
 
-profileEditModalClose.addEventListener("click", () => {
-  profileEditModal.classList.remove("modal__opened");
-});
+function handlerProfileEditButton() {
+  profileTitleInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
+
+  openPopup();
+}
+/* -------------------------------------------------------------------*/
+/*                      EVENT LISTENERS                               */
+/* -------------------------------------------------------------------*/
+
+profileEditButton.addEventListener("click", handlerProfileEditButton);
+
+profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
+
+profileEditCloseButton.addEventListener("click", closePopup);
