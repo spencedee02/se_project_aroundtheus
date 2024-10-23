@@ -36,7 +36,11 @@
             <p class="profile__description">Explorer</p>
           </div>
 
-          <button class="profile__add-button" type="button"></button>
+          <button
+            class="profile__add-button"
+            id="add-card-button"
+            type="button"
+          ></button>
         </section>
 
         <section class="cards page__section">
@@ -75,23 +79,23 @@
     </div>
 
     <!-- Add Card Modal -->
-    <div id="profile-edit-modal" class="modal">
+    <div id="add-card-modal" class="modal">
       <div class="modal__container">
         <button id="modal-close" class="modal__close"></button>
-        <p class="modal__heading">Edit Profile</p>
+        <p class="modal__heading">New Place</p>
         <form id="profile-form" class="modal__form">
           <input
-            placeholder="Name"
+            placeholder="Title"
             type="text"
             id="profile-title-input"
             name="title"
             class="modal__input"
           />
           <input
-            placeholder="Description"
+            placeholder="Image URL"
             type="text"
             id="profile-description-input"
-            name="description"
+            name="image url"
             class="modal__input"
           />
           <button class="modal__save">Save</button>

@@ -32,6 +32,11 @@ const initialCards = [
 const profileEditButton = document.querySelector("#profile-edit-button");
 const profileEditModal = document.querySelector("#profile-edit-modal");
 const profileEditCloseButton = document.querySelector("#modal-close");
+
+const addCardButton = document.querySelector("#add-card-button");
+const addCardModal = document.querySelector("#add-card-modal");
+const addCardButtonClose = document.querySelector("#modal-close");
+
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitleInput = document.querySelector("#profile-title-input");
