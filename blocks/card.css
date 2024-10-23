@@ -42,5 +42,12 @@
 
 .card__like-button:hover {
   opacity: 0.5;
-  cursor: pointer;
+  cursor: url(../images/hand\ cursor.svg) 16 16, auto;
+}
+
+.card__like-active-button {
+  background: url(../images/like-active.svg) center no-repeat;
+  width: 21px;
+  height: 18px;
+  border-color: transparent;
 }

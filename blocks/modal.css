@@ -36,7 +36,7 @@
 }
 
 .modal__close:hover {
-  cursor: pointer;
+  cursor: url(../images/hand\ cursor.svg) 16 16, auto;
   background-color: gray;
 }
 

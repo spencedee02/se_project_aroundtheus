@@ -53,6 +53,10 @@ const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const cardListElement = document.querySelector(".cards__list");
 
+// // //Like Button// ----- this might need to be deleted, and keep the code -------
+// ----------------------- at the bottom to make it work ----------------
+// const likeButton = document.querySelectorAll(".card__like-button");
+
 /* -------------------------------------------------------------------*/
 /*                      FUNCTIONS                                     */
 /* -------------------------------------------------------------------*/
@@ -110,3 +114,6 @@ addCardButtonClose.addEventListener("click", () => closePopup(addCardModal));
 initialCards.forEach((cardData) => {
   cardListElement.append(getCardElement(cardData));
 });
+
+//Like Button//
+const likeButton = document.querySelectorAll(".card__like-button");
