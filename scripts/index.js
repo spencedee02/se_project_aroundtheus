@@ -43,7 +43,7 @@ const profileDescriptionInput = document.querySelector(
 );
 const profileEditForm = profileEditModal.querySelector("#profile-form");
 
-//Profile Add Card Button//
+//Add Card Button//
 const addCardButton = document.querySelector("#add-card-button");
 const addCardModal = document.querySelector("#add-card-modal");
 const addCardButtonClose = addCardModal.querySelector("#modal-close");
@@ -53,9 +53,12 @@ const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const cardListElement = document.querySelector(".cards__list");
 
-// // //Like Button// ----- this might need to be deleted, and keep the code -------
-// ----------------------- at the bottom to make it work ----------------
-// const likeButton = document.querySelectorAll(".card__like-button");
+//Card Title & URL//
+// const cardTitle = document.querySelector(".card__title");
+// const cardImageUrl = document.querySelector(".card__image");
+const cardTitleInput = document.querySelector("#card-title-input");
+const cardImageUrlInput = document.querySelector("#card-description-input");
+const addCardForm = document.querySelector("#card-form");
 
 /* -------------------------------------------------------------------*/
 /*                      FUNCTIONS                                     */
@@ -78,6 +81,10 @@ function getCardElement(cardData) {
   return cardElement;
 }
 
+function renderCard(cardData) {
+  const cardElement = getCardElement(cardData);
+  cardListElement.prepend(cardElement);
+}
 /* -------------------------------------------------------------------*/
 /*                      EVENT HANDLERS                                */
 /* -------------------------------------------------------------------*/
@@ -88,6 +95,15 @@ function handlerProfileEditSubmit(e) {
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
   closePopup(profileEditModal);
+}
+
+//Add Card Button//
+function handlerAddCardSubmit(e) {
+  e.preventDefault();
+  const name = cardTitleInput.value;
+  const link = cardImageUrlInput.value;
+  renderCard({ name, link }, cardListElement);
+  closePopup(addCardModal);
 }
 
 /* -------------------------------------------------------------------*/
@@ -107,13 +123,19 @@ profileEditCloseButton.addEventListener("click", () =>
   closePopup(profileEditModal)
 );
 
-//Profile Add Card Button//
+//Add Card Button//
 addCardButton.addEventListener("click", () => openPopup(addCardModal));
+addCardForm.addEventListener("submit", handlerAddCardSubmit);
 addCardButtonClose.addEventListener("click", () => closePopup(addCardModal));
 
 initialCards.forEach((cardData) => {
-  cardListElement.append(getCardElement(cardData));
+  cardListElement.prepend(getCardElement(cardData));
 });
 
-//Like Button//
-const likeButton = document.querySelectorAll(".card__like-button");
+// //Like Button// <-- This is an element, for some reason the nodes won't show unless it's down here -->//
+const likeButtons = document.querySelectorAll(".card__like-button");
+likeButtons.forEach((likeButton) => {
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
+});

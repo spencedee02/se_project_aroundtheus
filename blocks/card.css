@@ -45,9 +45,6 @@
   cursor: url(../images/hand\ cursor.svg) 16 16, auto;
 }
 
-.card__like-active-button {
+.card__like-button_active {
   background: url(../images/like-active.svg) center no-repeat;
-  width: 21px;
-  height: 18px;
-  border-color: transparent;
 }
