@@ -29,14 +29,12 @@ const initialCards = [
 /*                       ELEMENTS                                     */
 /* -------------------------------------------------------------------*/
 
+//Profile Edit Button//
 const profileEditButton = document.querySelector("#profile-edit-button");
 const profileEditModal = document.querySelector("#profile-edit-modal");
-const profileEditCloseButton = document.querySelector("#modal-close");
+const profileEditCloseButton = profileEditModal.querySelector("#modal-close");
 
-const addCardButton = document.querySelector("#add-card-button");
-const addCardModal = document.querySelector("#add-card-modal");
-const addCardButtonClose = document.querySelector("#modal-close");
-
+//Profile name & Description//
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const profileTitleInput = document.querySelector("#profile-title-input");
@@ -44,18 +42,34 @@ const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
 const profileEditForm = profileEditModal.querySelector("#profile-form");
+
+//Profile Add Card Button//
+// const addCardButton = document.querySelector("#add-card-button");
+// const addCardModal = document.querySelector("#add-card-modal");
+// const addCardButtonClose = document.querySelector("#modal-close");
+
+//Cards//
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const cardListElement = document.querySelector(".cards__list");
+
 /* -------------------------------------------------------------------*/
 /*                      FUNCTIONS                                     */
 /* -------------------------------------------------------------------*/
 
-function closePopup() {
-  profileEditModal.classList.remove("modal_opened");
+//double check???//
+// function closePopup() {
+//   profileEditModal.classList.remove("modal_opened");
+// }
+// function openPopup() {
+//   profileEditModal.classList.add("modal_opened");
+// }
+
+function closePopup(modal) {
+  modal.classList.remove("modal_opened");
 }
-function openPopup() {
-  profileEditModal.classList.add("modal_opened");
+function openPopup(modal) {
+  modal.classList.add("modal_opened");
 }
 
 function getCardElement(cardData) {
@@ -71,28 +85,40 @@ function getCardElement(cardData) {
 /* -------------------------------------------------------------------*/
 /*                      EVENT HANDLERS                                */
 /* -------------------------------------------------------------------*/
+
+//Profile Edit Button//
+
 function handlerProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
   profileDescription.textContent = profileDescriptionInput.value;
-  closePopup();
+  closePopup(profileEditModal);
 }
+//double check????//
+// function handlerProfileEditButton() {
+//   profileTitleInput.value = profileTitle.textContent;
+//   profileDescriptionInput.value = profileDescription.textContent;
 
-function handlerProfileEditButton() {
-  profileTitleInput.value = profileTitle.textContent;
-  profileDescriptionInput.value = profileDescription.textContent;
+//   openPopup();
+//}
 
-  openPopup();
-}
 /* -------------------------------------------------------------------*/
 /*                      EVENT LISTENERS                               */
 /* -------------------------------------------------------------------*/
 
-profileEditButton.addEventListener("click", handlerProfileEditButton);
+//Profile Edit Button//
+
+profileEditButton.addEventListener("click", () => {
+  openPopup(profileEditModal);
+  profileTitleInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
+});
 
 profileEditForm.addEventListener("submit", handlerProfileEditSubmit);
 
-profileEditCloseButton.addEventListener("click", closePopup);
+profileEditCloseButton.addEventListener("click", () =>
+  closePopup(profileEditModal)
+);
 
 initialCards.forEach((cardData) => {
   cardListElement.append(getCardElement(cardData));
