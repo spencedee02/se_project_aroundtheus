@@ -71,10 +71,18 @@ function openPopup(modal) {
   modal.classList.add("modal_opened");
 }
 
+//<----NOTE TO MYSELF---->//
+//It's important to consolodate the function to lessen the error and to make it neat//
 function getCardElement(cardData) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImageElement = cardElement.querySelector(".card__image");
   const cardTitleElement = cardElement.querySelector(".card__title");
+  const likeButton = cardElement.querySelector(".card__like-button");
+
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.add("card__like-button_active");
+  });
+
   cardTitleElement.textContent = cardData.name;
   cardImageElement.src = cardData.link;
   cardImageElement.alt = cardData.name;
@@ -130,12 +138,4 @@ addCardButtonClose.addEventListener("click", () => closePopup(addCardModal));
 
 initialCards.forEach((cardData) => {
   cardListElement.prepend(getCardElement(cardData));
-});
-
-// //Like Button// <-- This is an element, for some reason the nodes won't show unless it's down here -->//
-const likeButtons = document.querySelectorAll(".card__like-button");
-likeButtons.forEach((likeButton) => {
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
-  });
 });
