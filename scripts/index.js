@@ -58,6 +58,12 @@ const cardTitleInput = document.querySelector("#card-title-input");
 const cardImageUrlInput = document.querySelector("#card-description-input");
 const addCardForm = document.querySelector("#card-form");
 
+// Preview Card//
+const cardPreviewModal = document.querySelector(".card__preview-modal");
+const cardPreviewClose = cardPreviewModal.querySelector(
+  ".preview__close-button"
+);
+
 /* -------------------------------------------------------------------*/
 /*                      FUNCTIONS                                     */
 /* -------------------------------------------------------------------*/
@@ -84,6 +90,18 @@ function getCardElement(cardData) {
 
   deleteButton.addEventListener("click", () => {
     cardElement.remove();
+  });
+
+  cardImageElement.addEventListener("click", () => {
+    cardPreviewModal.querySelector(".card__preview-image").src = cardData.link;
+    cardPreviewModal.querySelector(".card__preview-image").alt = cardData.name;
+    cardPreviewModal.querySelector(".card__preview-title").textContent =
+      cardData.name;
+    openPopup(cardPreviewModal);
+  });
+
+  cardPreviewClose.addEventListener("click", () => {
+    closePopup(cardPreviewModal);
   });
 
   cardTitleElement.textContent = cardData.name;
@@ -142,3 +160,5 @@ addCardButtonClose.addEventListener("click", () => closePopup(addCardModal));
 initialCards.forEach((cardData) => {
   cardListElement.prepend(getCardElement(cardData));
 });
+
+//Card Image Preview//
