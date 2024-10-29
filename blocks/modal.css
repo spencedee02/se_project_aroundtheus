@@ -93,21 +93,21 @@
 
 /* PREVIEW MODAL */
 
-.card__preview-modal {
+.modal__preview {
   justify-content: center;
   align-items: center;
 }
 
-.card__preview-container {
+.modal__preview-container {
   position: relative;
 }
 
-.card__preview-image {
+.modal__preview-image {
   max-width: 75vw;
   max-height: 75vh;
 }
 
-.preview__close-button {
+.modal__preview-close {
   background-image: url("../images/close.svg") center no-repeat;
   position: absolute;
   background-color: transparent;
@@ -117,7 +117,7 @@
   height: 40px;
 }
 
-.preview__close-button:hover {
+.modal__preview-close:hover {
   opacity: 0.5;
   cursor: url(../images/hand\ cursor.svg) 16 16, auto;
 }
@@ -156,7 +156,7 @@
 }
 
 @media screen and (max-width: 620px) {
-  .card__preview-image {
+  .modal__preview-image {
     width: 282px;
     height: 322px;
   }
