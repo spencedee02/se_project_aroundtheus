@@ -69,16 +69,8 @@ const cardPreviewClose = cardPreviewModal.querySelector(
 const previewImage = cardPreviewModal.querySelector(".modal__preview-image");
 const previewTitle = cardPreviewModal.querySelector(".modal__preview-title");
 
-// Hello reviewer, sorry for the run-around. I didn’t fully understand what you wanted me to do,
-// so I had to ask for help to clarify your requirements.
-// I’m guessing you just want me to move these elements.
-// I was confused because I thought constants needed to stay inside their function.
-// I wasn’t aware that they could be moved outside the function.
-// Anyway, I hope this satisfies your review.
-//
-// I do have a question, though. On line 94, I still have those constants inside the function.
-// Should those be moved outside too, or does it depend on the situation?
-// Thanks.
+// Thank you for explaining this better! now I understand why do we put const inside a function.
+//Thanks!!!
 
 // ---------------------------------------------------------------------------//
 //                          FUNCTIONS                                         //
