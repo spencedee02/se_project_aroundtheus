@@ -93,7 +93,7 @@
 
 /* PREVIEW MODAL */
 
-.modal__preview {
+.modal_type_preview {
   justify-content: center;
   align-items: center;
 }

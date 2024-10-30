@@ -62,7 +62,7 @@ const cardImageUrlInput = document.querySelector("#card-url-input");
 const addCardForm = document.querySelector("#card-form");
 
 //Preview Image//
-const cardPreviewModal = document.querySelector(".modal__preview");
+const cardPreviewModal = document.querySelector(".modal_type_preview");
 const cardPreviewClose = cardPreviewModal.querySelector(
   ".modal__preview-close"
 );
