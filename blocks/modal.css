@@ -72,6 +72,20 @@
   color: black;
 }
 
+.modal__input_type_error {
+  border-color: red;
+}
+
+.modal__error_visible {
+  display: block;
+}
+.modal__error {
+  display: none;
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 .modal__save {
   margin: 18px 36px 0;
   padding: 0;
