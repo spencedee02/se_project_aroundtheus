@@ -20,10 +20,11 @@
 .modal__container {
   margin: auto;
   width: 430px;
-  height: 330px;
   background-color: white;
   border-radius: 10px;
   position: relative;
+  padding: 20px 36px;
+  box-sizing: border-box;
 }
 
 .modal__close {
@@ -50,23 +51,22 @@
 }
 
 .modal__heading {
-  width: 330px;
-  height: 23px;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-weight: 900;
   font-size: 24px;
   line-height: 29.05px;
   color: black;
-  margin-bottom: 54px;
-  margin-top: 24px;
-  margin-left: 36px;
-  margin-right: 64px;
+  margin: 14px 0 54px;
+}
+
+.modal__input-container {
+  position: relative;
+  min-height: 70px;
 }
 
 .modal__input {
-  width: 358px;
-  height: 27.26px;
-  margin: 0 30px 36px;
+  width: 100%;
+  height: 27px;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   color: black;
@@ -76,21 +76,24 @@
   border-color: red;
 }
 
-.modal__error_visible {
-  display: block;
-}
 .modal__error {
-  display: none;
-  color: red;
   font-size: 12px;
+  color: red;
+  visibility: hidden;
+  min-height: 1.2em;
+  line-height: 1.2em;
   margin-top: 5px;
 }
 
+.modal__error_visible {
+  visibility: visible;
+}
+
 .modal__save {
-  margin: 18px 36px 0;
   padding: 0;
-  width: 358px;
-  height: 50.15px;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 50px;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-weight: 400;
   font-size: 18px;
@@ -98,14 +101,20 @@
   background-color: black;
   color: white;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .modal__save:hover {
-  cursor: pointer;
   background-color: gray;
 }
 
-/* PREVIEW MODAL */
+.modal__save_disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
 
 .modal_type_preview {
   justify-content: center;
@@ -122,7 +131,7 @@
 }
 
 .modal__preview-close {
-  background-image: url("../images/close.svg") center no-repeat;
+  background-image: url("../images/close.svg");
   position: absolute;
   background-color: transparent;
   cursor: pointer;
@@ -139,39 +148,24 @@
 @media screen and (max-width: 670px) {
   .modal__container {
     width: 282px;
-    height: 322px;
   }
-  .modal__close {
-    height: 26px;
-    width: 26px;
-    top: -40px;
-    right: 9px;
-  }
+
   .modal__heading {
-    margin: 25px 22px 75px;
-    width: 238px;
-    height: 22px;
     font-size: 18px;
   }
 
   .modal__input {
-    margin: 0 22px 30px;
-    width: 238px;
-    height: 27px;
+    width: 100%;
   }
+
   .modal__save {
-    margin: 15px 22px 0;
     font-size: 14px;
-    line-height: 16.94px;
-    width: 238px;
     height: 46px;
-    padding-top: 0px;
   }
 }
 
 @media screen and (max-width: 620px) {
   .modal__preview-image {
-    width: 282px;
-    height: 322px;
+    width: 100%;
   }
 }
