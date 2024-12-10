@@ -69,24 +69,40 @@ const cardPreviewClose = cardPreviewModal.querySelector(
 const previewImage = cardPreviewModal.querySelector(".modal__preview-image");
 const previewTitle = cardPreviewModal.querySelector(".modal__preview-title");
 
-// Thank you for explaining this better! now I understand why do we put const inside a function.
-//Thanks!!!
-
 // ---------------------------------------------------------------------------//
 //                          FUNCTIONS                                         //
 //----------------------------------------------------------------------------//
 
-function closePopup(modal) {
-  modal.classList.remove("modal_opened");
-}
-
+// Open Modal
 function openPopup(modal) {
   modal.classList.add("modal_opened");
+  document.addEventListener("keydown", handleEscKey);
 }
 
-//<----NOTE TO MYSELF---->//
-//It's important to consolodate the function to lessen the error and to make it neat//
+// Close Modal
+function closePopup(modal) {
+  modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", handleEscKey);
+}
 
+// Handle Esc Key
+function handleEscKey(event) {
+  if (event.key === "Escape") {
+    const openModal = document.querySelector(".modal_opened");
+    if (openModal) {
+      closePopup(openModal);
+    }
+  }
+}
+
+// Handle Overlay Click
+function handleOverlayClick(event) {
+  if (event.target.classList.contains("modal_opened")) {
+    closePopup(event.target);
+  }
+}
+
+// Get Card Element
 function getCardElement(cardData) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImageElement = cardElement.querySelector(".card__image");
@@ -117,6 +133,7 @@ function getCardElement(cardData) {
   return cardElement;
 }
 
+// Render Card
 function renderCard(cardData) {
   const cardElement = getCardElement(cardData);
   cardListElement.prepend(cardElement);
@@ -126,7 +143,7 @@ function renderCard(cardData) {
 //                          EVENT HANDLERS                                    //
 //----------------------------------------------------------------------------//
 
-//Profile Edit Button//
+// Profile Edit Submit
 function handlerProfileEditSubmit(e) {
   e.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
@@ -134,7 +151,7 @@ function handlerProfileEditSubmit(e) {
   closePopup(profileEditModal);
 }
 
-//Add Card Button//
+// Add Card Submit
 function handlerAddCardSubmit(e) {
   e.preventDefault();
   const name = cardTitleInput.value;
@@ -145,10 +162,10 @@ function handlerAddCardSubmit(e) {
 }
 
 // ---------------------------------------------------------------------------//
-//                         EVENT LISTENER                                     //
+//                         EVENT LISTENERS                                    //
 //----------------------------------------------------------------------------//
 
-//Profile Edit Button//
+// Profile Edit Button
 profileEditButton.addEventListener("click", () => {
   openPopup(profileEditModal);
   profileTitleInput.value = profileTitle.textContent;
@@ -160,13 +177,22 @@ profileEditCloseButton.addEventListener("click", () =>
   closePopup(profileEditModal)
 );
 
-//Add Card Button//
-addCardButton.addEventListener("click", () => openPopup(addCardModal));
+// Add Card Button
+addCardButton.addEventListener("click", () => {
+  openPopup(addCardModal);
+  addCardForm.reset(); // Reset form fields
+});
+
 addCardForm.addEventListener("submit", handlerAddCardSubmit);
 addCardButtonClose.addEventListener("click", () => closePopup(addCardModal));
 
-// Close Preview Modal (only one listener added here)
+// Close Preview Modal
 cardPreviewClose.addEventListener("click", () => closePopup(cardPreviewModal));
 
-// Render initial cards
+// Overlay Click for All Modals
+document.querySelectorAll(".modal").forEach((modal) => {
+  modal.addEventListener("mousedown", handleOverlayClick);
+});
+
+// Render Initial Cards
 initialCards.forEach(renderCard);

@@ -162,6 +162,13 @@
     font-size: 14px;
     height: 46px;
   }
+
+  .modal__close {
+  height: 26px;
+  width: 26px;
+  top: -45px;
+  right: 0;
+ 
 }
 
 @media screen and (max-width: 620px) {
@@ -169,3 +176,4 @@
     width: 100%;
   }
 }
+

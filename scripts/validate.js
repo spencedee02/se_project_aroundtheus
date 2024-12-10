@@ -8,24 +8,6 @@ const validationSettings = {
   errorClass: "modal__error_visible",
 };
 
-// Function to close the modal
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-}
-
-// Function to handle the Esc key
-function handleEscKey(event) {
-  if (event.key === "Escape") {
-    const openModal = document.querySelector(".modal_opened");
-    if (openModal) {
-      closeModal(openModal);
-    }
-  }
-}
-
-// Attach the Esc key listener to the document
-document.addEventListener("keydown", handleEscKey);
-
 // Show error message
 function showInputError(
   formElement,
@@ -63,8 +45,7 @@ function resetFormState(formElement, settings) {
   });
 
   // Disable the save button
-  submitButton.classList.add(settings.inactiveButtonClass);
-  submitButton.disabled = true;
+  toggleStateButton(inputList, submitButton, settings);
 }
 
 // Toggle the state of the Save button
@@ -113,26 +94,10 @@ function enableValidation(settings) {
   formList.forEach((formElement) => {
     formElement.addEventListener("submit", (e) => {
       e.preventDefault(); // Prevent default form submission
-      const modal = formElement.closest(".modal");
-      closeModal(modal); // Close the modal after submission
-      resetFormState(formElement, settings); // Reset form after submission
     });
 
     setEventListeners(formElement, settings);
-
-    // Reset form state when the modal is opened
-    const modal = formElement.closest(".modal");
-    modal.addEventListener("click", (e) => {
-      if (e.target.classList.contains("modal_opened")) {
-        resetFormState(formElement, settings);
-      }
-    });
   });
-}
-
-// Function to close the modal
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
 }
 
 // Activate Validation
