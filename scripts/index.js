@@ -180,7 +180,11 @@ profileEditCloseButton.addEventListener("click", () =>
 // Add Card Button
 addCardButton.addEventListener("click", () => {
   openPopup(addCardModal);
-  addCardForm.reset(); // Reset form fields
+  //Sorry, I thought that was normal to do. I took out the reset//
+  // Also, I was a lil frustrated, there was really no way of communicating with you//
+  // I realized the git was not being pushed, that is why you saw 2//
+  //submission that looks the same//
+  //anyways I appreciate your time in reviewing this//
 });
 
 addCardForm.addEventListener("submit", handlerAddCardSubmit);

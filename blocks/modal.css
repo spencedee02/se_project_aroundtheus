@@ -148,6 +148,7 @@
 @media screen and (max-width: 670px) {
   .modal__container {
     width: 282px;
+    padding: 20px 22px;
   }
 
   .modal__heading {
