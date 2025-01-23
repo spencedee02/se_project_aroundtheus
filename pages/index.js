@@ -43,8 +43,6 @@ const validationSettings = {
 const cardListElement = document.querySelector(".cards__list");
 const profileEditModal = document.querySelector("#profile-edit-modal");
 const addCardModal = document.querySelector("#add-card-modal");
-
-// Profile Edit Elements
 const profileEditButton = document.querySelector("#profile-edit-button");
 const profileEditCloseButton = profileEditModal.querySelector(
   "#profile-modal-close"
@@ -56,15 +54,11 @@ const profileDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
 const profileEditForm = profileEditModal.querySelector("#profile-form");
-
-// Add Card Elements
 const addCardButton = document.querySelector("#add-card-button");
 const addCardCloseButton = addCardModal.querySelector("#card-modal-close");
 const cardTitleInput = document.querySelector("#card-title-input");
 const cardImageUrlInput = document.querySelector("#card-url-input");
 const addCardForm = document.querySelector("#card-form");
-
-// Preview Modal Elements
 const cardPreviewModal = document.querySelector(".modal_type_preview");
 const previewImage = cardPreviewModal.querySelector(".modal__preview-image");
 const previewTitle = cardPreviewModal.querySelector(".modal__preview-title");
@@ -90,14 +84,12 @@ function handleEscKey(event) {
   }
 }
 
-// Close modal on overlay click
 function handleOverlayClick(event) {
   if (event.target.classList.contains("modal_opened")) {
     closePopup(event.target);
   }
 }
 
-// Handle Image Click
 function handleImageClick(name, link) {
   previewImage.src = link;
   previewImage.alt = name;
@@ -105,7 +97,6 @@ function handleImageClick(name, link) {
   openPopup(cardPreviewModal);
 }
 
-// Handle Profile Edit Submit
 function handleProfileEditSubmit(event) {
   event.preventDefault();
   profileTitle.textContent = profileTitleInput.value;
@@ -113,15 +104,19 @@ function handleProfileEditSubmit(event) {
   closePopup(profileEditModal);
 }
 
-// Handle Add Card Submit
 function handleAddCardSubmit(event) {
   event.preventDefault();
   const name = cardTitleInput.value;
   const link = cardImageUrlInput.value;
-  const card = new Card({ name, link }, "#card-template", handleImageClick);
-  cardListElement.prepend(card.generateCard());
+  createCard({ name, link }); // I made a special function outside this, so I can reuse it.
   closePopup(addCardModal);
   addCardForm.reset();
+  addCardValidator.toggleButtonState(); //thanks for the comment, I didn't realized that part.
+}
+
+function createCard(data) {
+  const card = new Card(data, "#card-template", handleImageClick);
+  cardListElement.prepend(card.generateCard());
 }
 
 // Event Listeners for Profile Edit
@@ -136,7 +131,11 @@ profileEditCloseButton.addEventListener("click", () =>
 profileEditForm.addEventListener("submit", handleProfileEditSubmit);
 
 // Event Listeners for Add Card
-addCardButton.addEventListener("click", () => openPopup(addCardModal));
+addCardButton.addEventListener("click", () => {
+  addCardForm.reset();
+  addCardValidator.resetValidation();
+  openPopup(addCardModal);
+});
 addCardCloseButton.addEventListener("click", () => closePopup(addCardModal));
 addCardForm.addEventListener("submit", handleAddCardSubmit);
 
@@ -150,11 +149,14 @@ document.querySelectorAll(".modal").forEach((modal) => {
   modal.addEventListener("mousedown", handleOverlayClick);
 });
 
+// Hello reviewer, sorry it took me awhile to submit the correction.. it was just stressful :(
+// I tried adding the code you gave me, but for some reason my whole code stopped working.
+// I had to figure out how to make my other code reusable. so I figure out by adding createCard outside
+// on it's own then just past it through here.
+// Can you please check if how I did. ty
+
 // Render Initial Cards
-initialCards.forEach((data) => {
-  const card = new Card(data, "#card-template", handleImageClick);
-  cardListElement.prepend(card.generateCard());
-});
+initialCards.forEach(createCard);
 
 // Initialize Form Validators
 const editProfileValidator = new FormValidator(

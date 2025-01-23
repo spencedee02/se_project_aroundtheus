@@ -18,7 +18,7 @@ export default class Card {
     this._element
       .querySelector(".card__like-button")
       .addEventListener("click", () => {
-        this._toggleLike();
+        this.toggleLike();
       });
 
     this._element
@@ -34,7 +34,7 @@ export default class Card {
       });
   }
 
-  _toggleLike() {
+  toggleLike() {
     this._element
       .querySelector(".card__like-button")
       .classList.toggle("card__like-button_active");
