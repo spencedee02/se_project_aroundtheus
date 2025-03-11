@@ -165,16 +165,15 @@
   }
 
   .modal__close {
-  height: 26px;
-  width: 26px;
-  top: -45px;
-  right: 0;
- 
-}
+    height: 26px;
+    width: 26px;
+    top: -45px;
+    right: 0;
+  }
 
-@media screen and (max-width: 620px) {
-  .modal__preview-image {
-    width: 100%;
+  @media screen and (max-width: 620px) {
+    .modal__preview-image {
+      width: 100%;
+    }
   }
 }
-
