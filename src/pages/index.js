@@ -1,5 +1,9 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 import "../pages/index.css";
 
 // Initial Cards
@@ -41,130 +45,80 @@ const validationSettings = {
 };
 
 // Selectors
-const cardListElement = document.querySelector(".cards__list");
-const profileEditModal = document.querySelector("#profile-edit-modal");
-const addCardModal = document.querySelector("#add-card-modal");
-const profileEditButton = document.querySelector("#profile-edit-button");
-const profileEditCloseButton = profileEditModal.querySelector(
-  "#profile-modal-close"
-);
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-const profileTitleInput = document.querySelector("#profile-title-input");
-const profileDescriptionInput = document.querySelector(
-  "#profile-description-input"
-);
-const profileEditForm = profileEditModal.querySelector("#profile-form");
-const addCardButton = document.querySelector("#add-card-button");
-const addCardCloseButton = addCardModal.querySelector("#card-modal-close");
-const cardTitleInput = document.querySelector("#card-title-input");
-const cardImageUrlInput = document.querySelector("#card-url-input");
+const cardListElement = ".cards__list";
+const profileEditModal = "#profile-edit-modal";
+const addCardModal = "#add-card-modal";
+const cardPreviewModal = ".modal_type_preview";
+const profileForm = document.querySelector("#profile-form");
 const addCardForm = document.querySelector("#card-form");
-const cardPreviewModal = document.querySelector(".modal_type_preview");
-const previewImage = cardPreviewModal.querySelector(".modal__preview-image");
-const previewTitle = cardPreviewModal.querySelector(".modal__preview-title");
-const cardPreviewCloseButton = cardPreviewModal.querySelector(
-  ".modal__preview-close"
-);
 
-// Functions for opening and closing modals
-function openPopup(modal) {
-  modal.classList.add("modal_opened");
-  document.addEventListener("keydown", handleEscKey);
-}
+// User Info Instance
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  descriptionSelector: ".profile__description",
+});
 
-function closePopup(modal) {
-  modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", handleEscKey);
-}
+// PopupWithForm Instances
+const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
+  userInfo.setUserInfo({
+    name: data["profile-title"],
+    description: data["profile-description"],
+  });
+  editProfilePopup.close();
+});
+editProfilePopup.setEventListeners();
 
-function handleEscKey(event) {
-  if (event.key === "Escape") {
-    const openModal = document.querySelector(".modal_opened");
-    if (openModal) closePopup(openModal);
-  }
-}
+const addCardPopup = new PopupWithForm(addCardModal, (data) => {
+  const cardElement = createCard({
+    name: data["card-title"],
+    link: data["card-url"],
+  });
+  cardSection.addItem(cardElement);
+  addCardPopup.close();
+});
+addCardPopup.setEventListeners();
 
-function handleOverlayClick(event) {
-  if (event.target.classList.contains("modal_opened")) {
-    closePopup(event.target);
-  }
-}
+// PopupWithImage Instance
+const previewPopup = new PopupWithImage(cardPreviewModal);
+previewPopup.setEventListeners();
 
-function handleImageClick(name, link) {
-  previewImage.src = link;
-  previewImage.alt = name;
-  previewTitle.textContent = name;
-  openPopup(cardPreviewModal);
-}
-
-function handleProfileEditSubmit(event) {
-  event.preventDefault();
-  profileTitle.textContent = profileTitleInput.value;
-  profileDescription.textContent = profileDescriptionInput.value;
-  closePopup(profileEditModal);
-}
-
-function handleAddCardSubmit(event) {
-  event.preventDefault();
-  const name = cardTitleInput.value;
-  const link = cardImageUrlInput.value;
-  createCard({ name, link }); // I made a special function outside this, so I can reuse it.
-  closePopup(addCardModal);
-  addCardForm.reset();
-  addCardValidator.toggleButtonState(); //thanks for the comment, I didn't realized that part.
-}
-
+// Card Creation
 function createCard(data) {
-  const card = new Card(data, "#card-template", handleImageClick);
-  cardListElement.prepend(card.generateCard());
+  const card = new Card(data, "#card-template", (name, link) => {
+    previewPopup.open({ name, link });
+  });
+  return card.generateCard();
 }
 
-// Event Listeners for Profile Edit
-profileEditButton.addEventListener("click", () => {
-  profileTitleInput.value = profileTitle.textContent;
-  profileDescriptionInput.value = profileDescription.textContent;
-  openPopup(profileEditModal);
-});
-profileEditCloseButton.addEventListener("click", () =>
-  closePopup(profileEditModal)
+// Section Instance
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const cardElement = createCard(item);
+      cardSection.addItem(cardElement);
+    },
+  },
+  cardListElement
 );
-profileEditForm.addEventListener("submit", handleProfileEditSubmit);
+cardSection.renderItems();
 
-// Event Listeners for Add Card
-addCardButton.addEventListener("click", () => {
-  addCardForm.reset();
-  addCardValidator.resetValidation();
-  openPopup(addCardModal);
-});
-addCardCloseButton.addEventListener("click", () => closePopup(addCardModal));
-addCardForm.addEventListener("submit", handleAddCardSubmit);
-
-// Close Preview Modal
-cardPreviewCloseButton.addEventListener("click", () =>
-  closePopup(cardPreviewModal)
-);
-
-// Add overlay click event listeners to all modals
-document.querySelectorAll(".modal").forEach((modal) => {
-  modal.addEventListener("mousedown", handleOverlayClick);
-});
-
-// Hello reviewer, sorry it took me awhile to submit the correction.. it was just stressful :(
-// I tried adding the code you gave me, but for some reason my whole code stopped working.
-// I had to figure out how to make my other code reusable. so I figure out by adding createCard outside
-// on it's own then just past it through here.
-// Can you please check if how I did. ty
-
-// Render Initial Cards
-initialCards.forEach(createCard);
-
-// Initialize Form Validators
-const editProfileValidator = new FormValidator(
-  validationSettings,
-  profileEditForm
-);
+// Form Validators
+const editProfileValidator = new FormValidator(validationSettings, profileForm);
 const addCardValidator = new FormValidator(validationSettings, addCardForm);
-
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
+
+// Event Listeners
+document.querySelector("#profile-edit-button").addEventListener("click", () => {
+  const userData = userInfo.getUserInfo();
+  document.querySelector("#profile-title-input").value = userData.name;
+  document.querySelector("#profile-description-input").value =
+    userData.description;
+  editProfilePopup.open();
+});
+
+document.querySelector("#add-card-button").addEventListener("click", () => {
+  addCardValidator.resetValidation();
+  addCardPopup.open();
+});
