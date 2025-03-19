@@ -61,17 +61,20 @@ const userInfo = new UserInfo({
 // PopupWithForm Instances
 const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
   userInfo.setUserInfo({
-    name: data["profile-title"],
-    description: data["profile-description"],
+    name: data["title"], // Uses name="title" from HTML
+    description: data["description"], // Uses name="description" from HTML
   });
   editProfilePopup.close();
 });
 editProfilePopup.setEventListeners();
 
+// Updated Add Card Popup ✅
 const addCardPopup = new PopupWithForm(addCardModal, (data) => {
+  console.log("Form Data (Add Card): ", data); // Debugging
+
   const cardElement = createCard({
-    name: data["card-title"],
-    link: data["card-url"],
+    name: data["title"] || "Untitled", // Uses name="title" from HTML
+    link: data["image url"] || "https://via.placeholder.com/150", // Uses name="image url" from HTML
   });
   cardSection.addItem(cardElement);
   addCardPopup.close();
@@ -82,7 +85,7 @@ addCardPopup.setEventListeners();
 const previewPopup = new PopupWithImage(cardPreviewModal);
 previewPopup.setEventListeners();
 
-// Card Creation
+// Create Card Function ✅
 function createCard(data) {
   const card = new Card(data, "#card-template", (name, link) => {
     previewPopup.open({ name, link });
@@ -90,7 +93,7 @@ function createCard(data) {
   return card.generateCard();
 }
 
-// Section Instance
+// Section Instance - Initial Cards ✅
 const cardSection = new Section(
   {
     items: initialCards,
