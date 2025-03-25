@@ -4,45 +4,8 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import { initialCards, validationSettings } from "../utils/constants.js";
 import "../pages/index.css";
-
-// Initial Cards
-const initialCards = [
-  {
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
-  },
-  {
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg",
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/latemar.jpg",
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
-  },
-];
-
-// Validation Settings
-const validationSettings = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__save",
-  inactiveButtonClass: "modal__save_disabled",
-  inputErrorClass: "modal__input_type_error",
-  errorClass: "modal__error_visible",
-};
 
 // Selectors
 const cardListElement = ".cards__list";
@@ -78,6 +41,8 @@ const addCardPopup = new PopupWithForm(addCardModal, (data) => {
   });
   cardSection.addItem(cardElement);
   addCardPopup.close();
+  addCardForm.reset(); // reset -- Thank you!!!
+  addCardValidator.toggleButtonState(); // this will disable the button --- Thank You!!!
 });
 addCardPopup.setEventListeners();
 
@@ -122,6 +87,5 @@ document.querySelector("#profile-edit-button").addEventListener("click", () => {
 });
 
 document.querySelector("#add-card-button").addEventListener("click", () => {
-  addCardValidator.resetValidation();
   addCardPopup.open();
 });
