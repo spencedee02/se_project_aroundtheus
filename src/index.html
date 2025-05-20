@@ -19,11 +19,19 @@
 
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.png')%>"
-            alt="avatar"
-            class="profile__image"
-          />
+          <div class="profile__avatar-container">
+            <img
+              src="<%=require('./images/jacques-cousteau.png')%>"
+              alt="avatar"
+              class="profile__image"
+            />
+            <div class="profile__avatar-overlay"></div>
+            <button
+              class="profile__avatar-edit-button"
+              id="edit-avatar-button"
+              type="button"
+            ></button>
+          </div>
 
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
@@ -86,6 +94,29 @@
               id="profile-description-input-error"
               class="modal__error"
             ></span>
+          </label>
+          <button class="modal__save" disabled>Save</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Project 9 -->
+    <!-- Edit Avatar Modal -->
+    <div id="edit-avatar-modal" class="modal">
+      <div class="modal__container">
+        <button class="modal__close" id="avatar-modal-close"></button>
+        <p class="modal__heading">Change Profile Picture</p>
+        <form id="avatar-form" class="modal__form">
+          <label class="modal__input-container">
+            <input
+              placeholder="Image URL"
+              type="url"
+              id="avatar-url-input"
+              name="avatar"
+              class="modal__input"
+              required
+            />
+            <span id="avatar-url-input-error" class="modal__error"></span>
           </label>
           <button class="modal__save" disabled>Save</button>
         </form>

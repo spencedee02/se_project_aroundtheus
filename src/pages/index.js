@@ -14,6 +14,9 @@ const addCardModal = "#add-card-modal";
 const cardPreviewModal = ".modal_type_preview";
 const profileForm = document.querySelector("#profile-form");
 const addCardForm = document.querySelector("#card-form");
+const avatarForm = document.querySelector("#avatar-form");
+const editAvatarButton = document.querySelector("#edit-avatar-button");
+const profileImage = document.querySelector(".profile__image");
 
 // Delete confirmation modal setup
 const confirmModal = document.querySelector(".modal_type_confirm");
@@ -81,6 +84,12 @@ const addCardPopup = new PopupWithForm(addCardModal, (data) => {
 });
 addCardPopup.setEventListeners();
 
+const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
+  profileImage.src = data.avatar;
+  editAvatarPopup.close();
+});
+editAvatarPopup.setEventListeners();
+
 // PopupWithImage Instance
 const previewPopup = new PopupWithImage(cardPreviewModal);
 previewPopup.setEventListeners();
@@ -117,8 +126,10 @@ cardSection.renderItems();
 // Form Validators
 const editProfileValidator = new FormValidator(validationSettings, profileForm);
 const addCardValidator = new FormValidator(validationSettings, addCardForm);
+const avatarValidator = new FormValidator(validationSettings, avatarForm);
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
+avatarValidator.enableValidation();
 
 // Event Listeners
 document.querySelector("#profile-edit-button").addEventListener("click", () => {
@@ -131,4 +142,8 @@ document.querySelector("#profile-edit-button").addEventListener("click", () => {
 
 document.querySelector("#add-card-button").addEventListener("click", () => {
   addCardPopup.open();
+});
+
+editAvatarButton.addEventListener("click", () => {
+  editAvatarPopup.open();
 });
