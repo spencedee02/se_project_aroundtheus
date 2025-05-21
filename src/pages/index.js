@@ -146,7 +146,6 @@ function createCard(data) {
 // Section Instance
 const cardSection = new Section(
   {
-    items: [],
     renderer: (item) => {
       const cardElement = createCard(item);
       cardSection.addItem(cardElement);
@@ -161,7 +160,7 @@ api
   .then(([userData, cards]) => {
     userInfo.setUserInfo({ name: userData.name, description: userData.about });
     profileImage.src = userData.avatar;
-    cardSection.renderItems(cards.reverse());
+    cardSection.renderItems(cards.reverse()); // Pass cards directly to renderItems
   })
   .catch(console.error);
 
