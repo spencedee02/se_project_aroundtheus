@@ -4,8 +4,17 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, validationSettings } from "../utils/constants.js";
+import Api from "../components/api.js";
+import { validationSettings } from "../utils/constants.js";
 import "../pages/index.css";
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "f7c32d64-03fb-4be9-a84c-fb3ea30dd569",
+    "Content-Type": "application/json",
+  },
+});
 
 // Selectors
 const cardListElement = ".cards__list";
@@ -50,10 +59,16 @@ cancelButton.addEventListener("click", () => {
 confirmForm.addEventListener("submit", (e) => {
   e.preventDefault();
   if (cardToDelete) {
-    cardToDelete.remove();
-    cardToDelete = null;
+    const cardId = cardToDelete.getAttribute("data-id");
+    api
+      .deleteCard(cardId)
+      .then(() => {
+        cardToDelete.remove();
+        cardToDelete = null;
+        closeModal(confirmModal);
+      })
+      .catch(console.error);
   }
-  closeModal(confirmModal);
 });
 
 // User Info Instance
@@ -64,29 +79,47 @@ const userInfo = new UserInfo({
 
 // PopupWithForm Instances
 const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
-  userInfo.setUserInfo({
-    name: data["title"],
-    description: data["description"],
-  });
-  editProfilePopup.close();
+  editProfilePopup.setButtonText("Saving...");
+  api
+    .updateUserInfo({ name: data["title"], about: data["description"] })
+    .then((userData) => {
+      userInfo.setUserInfo({
+        name: userData.name,
+        description: userData.about,
+      });
+      editProfilePopup.close();
+    })
+    .catch(console.error)
+    .finally(() => editProfilePopup.setButtonText("Save"));
 });
 editProfilePopup.setEventListeners();
 
 const addCardPopup = new PopupWithForm(addCardModal, (data) => {
-  const cardElement = createCard({
-    name: data["title"] || "Untitled",
-    link: data["image url"] || "https://via.placeholder.com/150",
-  });
-  cardSection.addItem(cardElement);
-  addCardPopup.close();
-  addCardForm.reset();
-  addCardValidator.toggleButtonState();
+  addCardPopup.setButtonText("Saving...");
+  api
+    .addCard({ name: data["title"], link: data["image url"] })
+    .then((cardData) => {
+      const cardElement = createCard(cardData);
+      cardSection.addItem(cardElement);
+      addCardForm.reset();
+      addCardValidator.toggleButtonState();
+      addCardPopup.close();
+    })
+    .catch(console.error)
+    .finally(() => addCardPopup.setButtonText("Save"));
 });
 addCardPopup.setEventListeners();
 
 const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
-  profileImage.src = data.avatar;
-  editAvatarPopup.close();
+  editAvatarPopup.setButtonText("Saving...");
+  api
+    .updateUserAvatar(data.avatar)
+    .then((userData) => {
+      profileImage.src = userData.avatar;
+      editAvatarPopup.close();
+    })
+    .catch(console.error)
+    .finally(() => editAvatarPopup.setButtonText("Save"));
 });
 editAvatarPopup.setEventListeners();
 
@@ -99,21 +132,21 @@ function createCard(data) {
   const card = new Card(
     data,
     "#card-template",
-    (name, link) => {
-      previewPopup.open({ name, link });
-    },
+    (name, link) => previewPopup.open({ name, link }),
     (cardElement) => {
       cardToDelete = cardElement;
       openModal(confirmModal);
     }
   );
-  return card.generateCard();
+  const element = card.generateCard();
+  element.setAttribute("data-id", data._id);
+  return element;
 }
 
-// Section Instance - Initial Cards
+// Section Instance
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: (item) => {
       const cardElement = createCard(item);
       cardSection.addItem(cardElement);
@@ -121,7 +154,16 @@ const cardSection = new Section(
   },
   cardListElement
 );
-cardSection.renderItems();
+
+// Load user data and cards from API
+api
+  .getAppData()
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo({ name: userData.name, description: userData.about });
+    profileImage.src = userData.avatar;
+    cardSection.renderItems(cards.reverse());
+  })
+  .catch(console.error);
 
 // Form Validators
 const editProfileValidator = new FormValidator(validationSettings, profileForm);
