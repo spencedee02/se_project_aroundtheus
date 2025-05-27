@@ -3,6 +3,7 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js"; // Import the confirmation popup
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/api.js";
 import { validationSettings } from "../utils/constants.js";
@@ -127,6 +128,23 @@ editAvatarPopup.setEventListeners();
 const previewPopup = new PopupWithImage(cardPreviewModal);
 previewPopup.setEventListeners();
 
+// PopupWithConfirmation Instance (for card deletion confirmation)
+const confirmDeletePopup = new PopupWithConfirmation(
+  ".modal_type_confirm",
+  () => {
+    const card = confirmDeletePopup.getCardElement(); // Get the card to be deleted
+    const cardId = card.getAttribute("data-id"); // Extract card ID
+    api
+      .deleteCard(cardId) // Make API request to delete the card
+      .then(() => {
+        card.remove(); // Remove the card from the DOM
+        confirmDeletePopup.close(); // Close the confirmation modal
+      })
+      .catch(console.error); // Log errors
+  }
+);
+confirmDeletePopup.setEventListeners();
+
 // Create Card Function
 function createCard(data) {
   const card = new Card(
@@ -134,8 +152,7 @@ function createCard(data) {
     "#card-template",
     (name, link) => previewPopup.open({ name, link }),
     (cardElement) => {
-      cardToDelete = cardElement;
-      openModal(confirmModal);
+      confirmDeletePopup.open(cardElement); // Open the confirmation popup with the current card
     }
   );
   const element = card.generateCard();

@@ -1,12 +1,11 @@
 /* ✅ FINAL card.css */
-
 .card {
   display: flex;
   flex-direction: column;
   list-style-type: none;
   border-radius: 10px;
   overflow: hidden;
-  position: relative;
+  position: relative; /* Ensures delete button is positioned relative to the card */
 }
 
 .card__image {
@@ -36,7 +35,7 @@
   justify-content: space-between;
 }
 
-.card__like-button {
+/* .card__like-button {
   background: transparent url("../images/heart-button.svg") center no-repeat;
   background-size: 21px 18px;
   width: 21px;
@@ -56,6 +55,28 @@
   width: 21px;
   height: 18px;
   border: none;
+} */
+
+.card__like-button {
+  background: transparent url("../images/heart-button.svg") center no-repeat;
+  background-size: 21px 18px;
+  width: 21px;
+  height: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+.card__like-button_active {
+  background: url("../images/like-active.svg") center no-repeat;
+  background-size: 21px 18px;
+  width: 21px;
+  height: 18px;
+  border: none;
+}
+
+.card__like-button:hover {
+  opacity: 1; /* Removed opacity change for debugging */
+  cursor: pointer; /* Changed to regular pointer cursor */
 }
 
 .card__delete-button {
@@ -64,8 +85,9 @@
   height: 19.3px;
   border: none;
   position: absolute;
-  top: 18px;
-  right: 20px;
+  top: 18px; /* Adjust to your needs */
+  right: 20px; /* Adjust to your needs */
+  z-index: 1; /* Ensure button is on top of other elements */
 }
 
 .card__delete-button:hover {
