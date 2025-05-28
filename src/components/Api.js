@@ -34,7 +34,14 @@ class Api {
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    }).then(this._checkResponse);
+    })
+      .then(this._checkResponse)
+      .then((cards) => {
+        return cards.map((card) => {
+          card.isLiked = card.likes && card.likes.length > 0; // Set initial liked state
+          return card;
+        });
+      });
   }
 
   addCard({ name, link }) {

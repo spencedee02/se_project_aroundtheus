@@ -10,7 +10,7 @@ export default class PopupWithForm extends Popup {
     this._inactiveButtonClass = "modal__save_disabled"; // Ensure this class is in your CSS
 
     // Avatar input field
-    this._avatarInput = this._form.querySelector("input[name='avatar']");
+    this._avatarInput = this._form.querySelector("#avatar-url-input");
   }
 
   _getInputValues() {
@@ -37,13 +37,14 @@ export default class PopupWithForm extends Popup {
           this.setButtonDisabled(true); // Disable button if input is empty
         }
       });
-    } else {
-      console.error("Avatar input field not found.");
     }
 
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
-      this._handleFormSubmit(this._getInputValues());
+      this._handleFormSubmit(this._getInputValues()).finally(() => {
+        // Set the button text back to the default text
+        this.setButtonText(this._defaultButtonText);
+      });
     });
   }
 
@@ -63,7 +64,6 @@ export default class PopupWithForm extends Popup {
   close() {
     super.close();
     this._form.reset(); // Reset fields on close
-    this.setButtonText(this._defaultButtonText); // Restore default button text
     this.setButtonDisabled(true); // Ensure the button is disabled on modal close
   }
 

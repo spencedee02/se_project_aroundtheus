@@ -155,7 +155,10 @@ confirmDeletePopup.setEventListeners();
 // Create Card Function
 function createCard(data) {
   const card = new Card(
-    data,
+    {
+      ...data, // Spread the data to include `isLiked` field
+      isLiked: data.isLiked, // Pass the isLiked state to the card
+    },
     "#card-template",
     (name, link) => previewPopup.open({ name, link }),
     (cardElement) => {
@@ -184,7 +187,16 @@ api
   .then(([userData, cards]) => {
     userInfo.setUserInfo({ name: userData.name, description: userData.about });
     profileImage.src = userData.avatar;
-    cardSection.renderItems(cards.reverse()); // Pass cards directly to renderItems
+
+    // Pass the likes information and isLiked state to each card
+    cardSection.renderItems(
+      cards
+        .map((card) => {
+          card.isLiked = card.likes && card.likes.length > 0;
+          return card;
+        })
+        .reverse()
+    );
   })
   .catch(console.error);
 
