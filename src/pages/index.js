@@ -35,26 +35,9 @@ const cancelButton = confirmModal.querySelector(".modal__cancel");
 let cardToDelete = null;
 
 // Modal handlers
-function openModal(modal) {
-  modal.classList.add("modal_opened");
-  document.addEventListener("keydown", closeOnEsc);
-}
-
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", closeOnEsc);
-}
-
-function closeOnEsc(evt) {
-  if (evt.key === "Escape") {
-    const openedModal = document.querySelector(".modal_opened");
-    closeModal(openedModal);
-  }
-}
-
 cancelButton.addEventListener("click", () => {
   cardToDelete = null;
-  closeModal(confirmModal);
+  confirmDeletePopup.close(); // Use the close method from PopupWithConfirmation
 });
 
 confirmForm.addEventListener("submit", (e) => {
@@ -66,7 +49,7 @@ confirmForm.addEventListener("submit", (e) => {
       .then(() => {
         cardToDelete.remove();
         cardToDelete = null;
-        closeModal(confirmModal);
+        confirmDeletePopup.close();
       })
       .catch(console.error);
   }
