@@ -41,10 +41,16 @@ export default class PopupWithForm extends Popup {
 
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
-      this._handleFormSubmit(this._getInputValues()).finally(() => {
-        // Set the button text back to the default text
-        this.setButtonText(this._defaultButtonText);
-      });
+      this._handleFormSubmit(this._getInputValues())
+        .then(() => {
+          // Reset the form only after a successful submission
+          this._form.reset();
+          this.close(); // Close the modal
+        })
+        .catch(console.error)
+        .finally(() => {
+          this.setButtonText(this._defaultButtonText); // Reset the button text in any case
+        });
     });
   }
 
@@ -63,7 +69,6 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    this._form.reset(); // Reset fields on close
     this.setButtonDisabled(true); // Ensure the button is disabled on modal close
   }
 

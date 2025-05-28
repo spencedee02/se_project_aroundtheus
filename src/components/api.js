@@ -4,11 +4,15 @@ class Api {
     this._headers = headers;
   }
 
+  // This method checks if the response is OK and returns the parsed JSON if successful
   _checkResponse(res) {
-    if (res.ok) return res.json();
-    return Promise.reject(`Error: ${res.status}`);
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status} - ${res.statusText}`); // Improved error message
   }
 
+  // Now every request will call this method to check the response
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
@@ -34,14 +38,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    })
-      .then(this._checkResponse)
-      .then((cards) => {
-        return cards.map((card) => {
-          card.isLiked = card.likes && card.likes.length > 0; // Set initial liked state
-          return card;
-        });
-      });
+    }).then(this._checkResponse);
   }
 
   addCard({ name, link }) {

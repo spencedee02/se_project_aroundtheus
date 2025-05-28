@@ -59,6 +59,7 @@ confirmForm.addEventListener("submit", (e) => {
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__image", // Pass avatar selector
 });
 
 // PopupWithForm Instances
@@ -103,7 +104,7 @@ const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
   api
     .updateUserAvatar(data.avatar)
     .then((userData) => {
-      profileImage.src = userData.avatar;
+      userInfo.setUserAvatar(userData.avatar); // Set avatar using the UserInfo method
       editAvatarPopup.close();
     })
     .catch(console.error)
@@ -169,9 +170,7 @@ api
   .getAppData()
   .then(([userData, cards]) => {
     userInfo.setUserInfo({ name: userData.name, description: userData.about });
-    profileImage.src = userData.avatar;
-
-    // Pass the likes information and isLiked state to each card
+    userInfo.setUserAvatar(userData.avatar); // Set the avatar using UserInfo
     cardSection.renderItems(
       cards
         .map((card) => {
