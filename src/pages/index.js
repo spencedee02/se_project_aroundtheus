@@ -113,6 +113,10 @@ addCardPopup.setEventListeners();
 
 const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
   editAvatarPopup.setButtonText("Saving...");
+
+  // Disable the button after submission
+  editAvatarPopup.setButtonDisabled(true);
+
   api
     .updateUserAvatar(data.avatar)
     .then((userData) => {
@@ -120,7 +124,10 @@ const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
       editAvatarPopup.close();
     })
     .catch(console.error)
-    .finally(() => editAvatarPopup.setButtonText("Save"));
+    .finally(() => {
+      editAvatarPopup.setButtonText("Save");
+      editAvatarPopup.setButtonDisabled(false); // Re-enable the button after submission
+    });
 });
 editAvatarPopup.setEventListeners();
 

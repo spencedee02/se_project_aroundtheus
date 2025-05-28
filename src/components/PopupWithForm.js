@@ -5,8 +5,12 @@ export default class PopupWithForm extends Popup {
     super(popupSelector);
     this._form = this._popup.querySelector(".modal__form");
     this._handleFormSubmit = handleFormSubmit;
-    this._submitButton = this._form.querySelector(".modal__save"); // ✅ Add this line
-    this._defaultButtonText = this._submitButton.textContent; // ✅ Save default text
+    this._submitButton = this._form.querySelector(".modal__save");
+    this._defaultButtonText = this._submitButton.textContent;
+    this._inactiveButtonClass = "modal__save_disabled"; // Ensure this class is in your CSS
+
+    // Avatar input field
+    this._avatarInput = this._form.querySelector("input[name='avatar']");
   }
 
   _getInputValues() {
@@ -20,6 +24,23 @@ export default class PopupWithForm extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
+
+    // Initialize the button as disabled when modal opens
+    this.setButtonDisabled(true); // Disable the button initially when the modal opens
+
+    // Listen for input change in the avatar field
+    if (this._avatarInput) {
+      this._avatarInput.addEventListener("input", () => {
+        if (this._avatarInput.value.trim() !== "") {
+          this.setButtonDisabled(false); // Enable button if there's input
+        } else {
+          this.setButtonDisabled(true); // Disable button if input is empty
+        }
+      });
+    } else {
+      console.error("Avatar input field not found.");
+    }
+
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
       this._handleFormSubmit(this._getInputValues());
@@ -30,9 +51,24 @@ export default class PopupWithForm extends Popup {
     this._submitButton.textContent = text;
   }
 
+  setButtonDisabled(isDisabled) {
+    this._submitButton.disabled = isDisabled;
+    if (isDisabled) {
+      this._submitButton.classList.add(this._inactiveButtonClass);
+    } else {
+      this._submitButton.classList.remove(this._inactiveButtonClass);
+    }
+  }
+
   close() {
     super.close();
-    this._form.reset(); // ✅ Optional: Reset fields on close
-    this.setButtonText(this._defaultButtonText); // ✅ Restore default button text
+    this._form.reset(); // Reset fields on close
+    this.setButtonText(this._defaultButtonText); // Restore default button text
+    this.setButtonDisabled(true); // Ensure the button is disabled on modal close
+  }
+
+  open() {
+    super.open();
+    this.setButtonDisabled(true); // Ensure the button is disabled every time the modal opens
   }
 }
