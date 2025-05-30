@@ -1,13 +1,21 @@
 // Project-9
+
 export default class Card {
-  constructor(data, cardSelector, handleImageClick, handleDeleteClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleDeleteClick,
+    likeCard,
+    unlikeCard
+  ) {
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleDeleteClick = handleDeleteClick;
-    this._id = data._id;
-    this._isLiked = data.isLiked; // Use the isLiked field passed from the server
+    this._likeCard = likeCard; // Store the likeCard callback
+    this._unlikeCard = unlikeCard; // Store the unlikeCard callback
   }
 
   _getTemplate() {
@@ -22,7 +30,17 @@ export default class Card {
     this._element
       .querySelector(".card__like-button")
       .addEventListener("click", () => {
-        this.toggleLike();
+        this.toggleLike(); // Toggle like state
+        const cardId = this._element.getAttribute("data-id");
+        if (
+          this._element
+            .querySelector(".card__like-button")
+            .classList.contains("card__like-button_active")
+        ) {
+          this._likeCard(cardId); // Call likeCard if it's liked
+        } else {
+          this._unlikeCard(cardId); // Call unlikeCard if it's unliked
+        }
       });
 
     this._element
@@ -39,21 +57,9 @@ export default class Card {
   }
 
   toggleLike() {
-    this._isLiked = !this._isLiked; // Toggle liked state
     this._element
       .querySelector(".card__like-button")
-      .classList.toggle("card__like-button_active", this._isLiked);
-
-    // Update the server with the new state
-    this._updateLikeState();
-  }
-
-  _updateLikeState() {
-    if (this._isLiked) {
-      api.likeCard(this._id); // Like the card on the backend
-    } else {
-      api.dislikeCard(this._id); // Dislike the card on the backend
-    }
+      .classList.toggle("card__like-button_active");
   }
 
   generateCard() {
@@ -62,13 +68,6 @@ export default class Card {
     const cardImage = this._element.querySelector(".card__image");
     cardImage.src = this._link;
     cardImage.alt = this._name;
-
-    // Set the initial like state based on the passed `isLiked` field
-    if (this._isLiked) {
-      this._element
-        .querySelector(".card__like-button")
-        .classList.add("card__like-button_active");
-    }
 
     this._setEventListeners();
     return this._element;

@@ -62,6 +62,25 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__image", // Pass avatar selector
 });
 
+// Like/Unlike logic moved to index.js
+function likeCard(cardId) {
+  api
+    .likeCard(cardId)
+    .then(() => {
+      // Handle the like action (e.g., updating UI or state)
+    })
+    .catch(console.error);
+}
+
+function unlikeCard(cardId) {
+  api
+    .dislikeCard(cardId)
+    .then(() => {
+      // Handle the unlike action (e.g., updating UI or state)
+    })
+    .catch(console.error);
+}
+
 // PopupWithForm Instances
 const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
   editProfilePopup.setButtonText("Saving...");
@@ -137,17 +156,24 @@ confirmDeletePopup.setEventListeners();
 // Create Card Function
 function createCard(data) {
   const card = new Card(
-    {
-      ...data, // Spread the data to include `isLiked` field
-      isLiked: data.isLiked, // Pass the isLiked state to the card
-    },
+    data,
     "#card-template",
     (name, link) => previewPopup.open({ name, link }),
     (cardElement) => {
       confirmDeletePopup.open(cardElement); // Open the confirmation popup with the current card
-    }
+    },
+    likeCard, // Pass likeCard function
+    unlikeCard // Pass unlikeCard function
   );
   const element = card.generateCard();
+
+  // Set the initial like state based on the data returned from the server
+  if (data.isLiked) {
+    element
+      .querySelector(".card__like-button")
+      .classList.add("card__like-button_active");
+  }
+
   element.setAttribute("data-id", data._id);
   return element;
 }
@@ -172,7 +198,7 @@ api
     cardSection.renderItems(
       cards
         .map((card) => {
-          card.isLiked = card.likes && card.likes.length > 0;
+          card.isLiked = card.likes && card.likes.length > 0; // Add isLiked to the card data
           return card;
         })
         .reverse()
