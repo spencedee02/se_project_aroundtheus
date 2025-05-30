@@ -65,7 +65,9 @@ const userInfo = new UserInfo({
 // PopupWithForm Instances
 const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
   editProfilePopup.setButtonText("Saving...");
-  api
+
+  // Return the API call
+  return api
     .updateUserInfo({ name: data["title"], about: data["description"] })
     .then((userData) => {
       userInfo.setUserInfo({
@@ -73,25 +75,21 @@ const editProfilePopup = new PopupWithForm(profileEditModal, (data) => {
         description: userData.about,
       });
       editProfilePopup.close();
-    })
-    .catch(console.error)
-    .finally(() => editProfilePopup.setButtonText("Save"));
+    });
 });
 editProfilePopup.setEventListeners();
 
 const addCardPopup = new PopupWithForm(addCardModal, (data) => {
   addCardPopup.setButtonText("Saving...");
-  api
+
+  // Return the API call
+  return api
     .addCard({ name: data["title"], link: data["image url"] })
     .then((cardData) => {
       const cardElement = createCard(cardData);
       cardSection.addItem(cardElement);
-      addCardForm.reset();
       addCardValidator.toggleButtonState();
-      addCardPopup.close();
-    })
-    .catch(console.error)
-    .finally(() => addCardPopup.setButtonText("Save"));
+    });
 });
 addCardPopup.setEventListeners();
 
@@ -101,13 +99,13 @@ const editAvatarPopup = new PopupWithForm("#edit-avatar-modal", (data) => {
   // Disable the button after submission
   editAvatarPopup.setButtonDisabled(true);
 
-  api
+  // Return the API call
+  return api
     .updateUserAvatar(data.avatar)
     .then((userData) => {
       userInfo.setUserAvatar(userData.avatar); // Set avatar using the UserInfo method
       editAvatarPopup.close();
     })
-    .catch(console.error)
     .finally(() => {
       editAvatarPopup.setButtonText("Save");
       editAvatarPopup.setButtonDisabled(false); // Re-enable the button after submission
