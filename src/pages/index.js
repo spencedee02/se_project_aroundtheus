@@ -17,6 +17,9 @@ const api = new Api({
   },
 });
 
+// Declare the currentUserId
+let currentUserId;
+
 // Selectors
 const cardListElement = ".cards__list";
 const profileEditModal = "#profile-edit-modal";
@@ -64,7 +67,7 @@ const userInfo = new UserInfo({
 
 // Like/Unlike logic moved to index.js
 function likeCard(cardId) {
-  api
+  return api
     .likeCard(cardId)
     .then(() => {
       // Handle the like action (e.g., updating UI or state)
@@ -73,7 +76,7 @@ function likeCard(cardId) {
 }
 
 function unlikeCard(cardId) {
-  api
+  return api
     .dislikeCard(cardId)
     .then(() => {
       // Handle the unlike action (e.g., updating UI or state)
@@ -193,15 +196,20 @@ const cardSection = new Section(
 api
   .getAppData()
   .then(([userData, cards]) => {
+    currentUserId = userData._id; // Save current user ID
     userInfo.setUserInfo({ name: userData.name, description: userData.about });
     userInfo.setUserAvatar(userData.avatar); // Set the avatar using UserInfo
     cardSection.renderItems(
       cards
         .map((card) => {
-          card.isLiked = card.likes && card.likes.length > 0; // Add isLiked to the card data
+          // Ensure 'likes' is an array (or default to an empty array if it's undefined)
+          card.likes = card.likes || [];
+
+          // Check if the current user liked the card
+          card.isLiked = card.likes.some((user) => user._id === currentUserId);
           return card;
         })
-        .reverse()
+        .reverse() // Reverse the order if needed
     );
   })
   .catch(console.error);
