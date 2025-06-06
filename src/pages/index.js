@@ -65,21 +65,21 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__image", // Pass avatar selector
 });
 
-// Like/Unlike logic moved to index.js
-function likeCard(cardId) {
+// Like/Unlike logic moved to index.js with updated card element handling
+function likeCard(cardId, cardElement) {
   return api
     .likeCard(cardId)
-    .then(() => {
-      // Handle the like action (e.g., updating UI or state)
+    .then((updatedCard) => {
+      cardElement.updateLikeState(); // Directly call updateLikeState() on the card instance
     })
     .catch(console.error);
 }
 
-function unlikeCard(cardId) {
+function unlikeCard(cardId, cardElement) {
   return api
     .dislikeCard(cardId)
-    .then(() => {
-      // Handle the unlike action (e.g., updating UI or state)
+    .then((updatedCard) => {
+      cardElement.updateLikeState(); // Directly call updateLikeState() on the card instance
     })
     .catch(console.error);
 }
@@ -170,12 +170,8 @@ function createCard(data) {
   );
   const element = card.generateCard();
 
-  // Set the initial like state based on the data returned from the server
-  if (data.isLiked) {
-    element
-      .querySelector(".card__like-button")
-      .classList.add("card__like-button_active");
-  }
+  // can call `updateLikeState` per Tutor
+  card.updateLikeState(); // Ensure like state is set correctly
 
   element.setAttribute("data-id", data._id);
   return element;
