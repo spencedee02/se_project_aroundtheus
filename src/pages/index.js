@@ -31,6 +31,13 @@ const avatarForm = document.querySelector("#avatar-form");
 const editAvatarButton = document.querySelector("#edit-avatar-button");
 const profileImage = document.querySelector(".profile__image");
 
+// Initialize userInfo
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__image", // Pass avatar selector
+});
+
 // Delete confirmation modal setup
 const confirmModal = document.querySelector(".modal_type_confirm");
 const confirmForm = confirmModal.querySelector(".modal__form");
@@ -58,18 +65,11 @@ confirmForm.addEventListener("submit", (e) => {
   }
 });
 
-// User Info Instance
-const userInfo = new UserInfo({
-  nameSelector: ".profile__title",
-  descriptionSelector: ".profile__description",
-  avatarSelector: ".profile__image", // Pass avatar selector
-});
-
 // Like/Unlike logic moved to index.js with updated card element handling
 function likeCard(cardId, cardElement) {
   return api
     .likeCard(cardId)
-    .then((updatedCard) => {
+    .then(() => {
       cardElement.updateLikeState(); // Directly call updateLikeState() on the card instance
     })
     .catch(console.error);
@@ -78,7 +78,7 @@ function likeCard(cardId, cardElement) {
 function unlikeCard(cardId, cardElement) {
   return api
     .dislikeCard(cardId)
-    .then((updatedCard) => {
+    .then(() => {
       cardElement.updateLikeState(); // Directly call updateLikeState() on the card instance
     })
     .catch(console.error);
@@ -170,9 +170,6 @@ function createCard(data) {
   );
   const element = card.generateCard();
 
-  // can call `updateLikeState` per Tutor
-  card.updateLikeState(); // Ensure like state is set correctly
-
   element.setAttribute("data-id", data._id);
   return element;
 }
@@ -198,11 +195,7 @@ api
     cardSection.renderItems(
       cards
         .map((card) => {
-          // Ensure 'likes' is an array (or default to an empty array if it's undefined)
           card.likes = card.likes || [];
-
-          // Check if the current user liked the card
-          card.isLiked = card.likes.some((user) => user._id === currentUserId);
           return card;
         })
         .reverse() // Reverse the order if needed
